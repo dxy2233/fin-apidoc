@@ -1,11 +1,16 @@
 #!/usr/bin/env node
 
-const program = require('commander')
 const axios = require('axios')
 const fs = require('fs')
 
-const apiPath = './src/api/' // 文件夹路径
-const apiUrl = 'http://192.168.0.103:5000/api_data.js'
+const params = process.argv.slice(2)
+if (!params[0]) {
+  console.log('target空')
+  return
+}
+
+const apiUrl = params[0]
+const apiPath = params[1] ? `./src/${params[1]}/` : './src/api/' // 文件夹路径
 
 /* 拉取原始数据 */
 const getApiData = async () => {
@@ -25,10 +30,16 @@ const handleData = (data) => {
 }
 /* 生成api文件 */
 const createFile = (data) => {
-  for (const [key, group] of Object.entries(data)) {
-    fs.writeFile(`${apiPath}${key}.js`, fileTemplate(group), (err) => {
-      if (err) console.log(err)
-    })
+  try {
+    fs.accessSync(apiPath, fs.constants.R_OK | fs.constants.W_OK)
+  } catch (error) {
+      fs.mkdirSync(apiPath)
+  } finally {
+      for (const [key, group] of Object.entries(data)) {
+        fs.writeFile(`${apiPath}${key}.js`, fileTemplate(group), (err) => {
+          if (err) console.log(err)
+       })
+      }
   }
 }
 /* 文件模板 */

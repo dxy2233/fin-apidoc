@@ -1,18 +1,18 @@
 {
   "name": "fin-apidoc",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "自动生成api",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "doc": "node bin/fin-apidoc.js http://192.168.0.103:5000/api_data.js api2"
   },
   "bin": {
-    "doc": "bin/fin-apidoc.js"
+    "fin-apidoc": "bin/fin-apidoc.js"
   },
   "author": "dxy2233",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
-    "commander": "^5.1.0"
+    "axios": "^0.19.2"
   }
 }
